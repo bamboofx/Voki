@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<data>
+	<vhss_domain></vhss_domain>
+	<vhss_domain_secure>https://vhost.oddcast.com</vhss_domain_secure>
+	<vhss_domain_dev>http://vhss-vd.oddcast.com</vhss_domain_dev>
+	<vhss_domain_dev_secure>https://vhss-vd.oddcast.com</vhss_domain_dev_secure>
+	<vhss_domain_staging>http://vhss-vs.oddcast.com</vhss_domain_staging>
+	<vhss_domain_staging_secure>https://vhss-vs.oddcast.com</vhss_domain_staging_secure>
+
+	<tts_domain>http://cache-a.oddcast.com</tts_domain>
+	<tts_domain_secure>https://cache.oddcast.com</tts_domain_secure>
+	<tts_domain_dev>http://cache-vd.oddcast.com</tts_domain_dev>
+	<tts_domain_dev_secure>https://cache-vd.oddcast.com</tts_domain_dev_secure>
+	<tts_domain_staging>http://cache-vs.oddcast.com</tts_domain_staging>
+	<tts_domain_staging_secure>https://cache-vs.oddcast.com</tts_domain_staging_secure>
+
+	<scene_status_php>http://data.oddcast.com/scenestatus.php</scene_status_php>
+	<scene_status_php_secure>https://data.oddcast.com/scenestatus.php</scene_status_php_secure>
+	<scene_status_php_dev>http://data-vd.oddcast.com/scenestatus.php</scene_status_php_dev>
+	<scene_status_php_dev_secure>https://data-vd.oddcast.com/scenestatus.php</scene_status_php_dev_secure>
+	<scene_status_php_staging>http://data-vs.oddcast.com/scenestatus.php</scene_status_php_staging>
+	<scene_status_php_staging_secure>https://data-vs.oddcast.com/scenestatus.php</scene_status_php_staging_secure>
+
+	<bad_words_php>http://vhss-d.oddcast.com/php/vhss_editors/getBadWords/acc=</bad_words_php>
+	<bad_words_php_secure>https://vhost.oddcast.com/php/vhss_editors/getBadWords/acc=</bad_words_php_secure>
+	<bad_words_php_dev>http://vhss-vd.oddcast.com/php/vhss_editors/getBadWords/acc=</bad_words_php_dev>
+	<bad_words_php_dev_secure>https://vhss-vd.oddcast.com/php/vhss_editors/getBadWords/acc=</bad_words_php_dev_secure>
+	<bad_words_php_staging>http://vhss-vs.oddcast.com/php/vhss_editors/getBadWords/acc=</bad_words_php_staging>
+	<bad_words_php_staging_secure>https://vhss-vs.oddcast.com/php/vhss_editors/getBadWords/acc=</bad_words_php_staging_secure>
+	
+	<sitepal_domain>http://www.sitepal.com/</sitepal_domain>
+	<sitepal_dev>http://www-vd.sitepal.com/</sitepal_dev>
+	<sitepal_staging>http://www-vs.sitepal.com/</sitepal_staging>
+
+	<say_by_name_php>/admin/getAudioByNameMP3.php</say_by_name_php>
+	<ai_php>/ai/input.php</ai_php>
+	<bg_php>/admin/getBGByNameV2.php</bg_php>
+	<send_lead_php>/leads/post.php</send_lead_php>
+	<export_xml>play_scene.xml</export_xml>
+	<comm_window>http://content.dev.oddcast.com/vhss_dev/vhss_voip_component.swf</comm_window>
+	<set_cookie>setCookie.php</set_cookie>
+</data>

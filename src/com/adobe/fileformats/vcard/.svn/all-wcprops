@@ -1,0 +1,35 @@
+K 25
+svn:wc:ra_dav:version-url
+V 93
+/svn/oddcast-workshops/!svn/ver/3738/branches/elfyourself2013/lib/com/adobe/fileformats/vcard
+END
+VCard.as
+K 25
+svn:wc:ra_dav:version-url
+V 102
+/svn/oddcast-workshops/!svn/ver/3738/branches/elfyourself2013/lib/com/adobe/fileformats/vcard/VCard.as
+END
+Address.as
+K 25
+svn:wc:ra_dav:version-url
+V 104
+/svn/oddcast-workshops/!svn/ver/3738/branches/elfyourself2013/lib/com/adobe/fileformats/vcard/Address.as
+END
+Email.as
+K 25
+svn:wc:ra_dav:version-url
+V 102
+/svn/oddcast-workshops/!svn/ver/3738/branches/elfyourself2013/lib/com/adobe/fileformats/vcard/Email.as
+END
+Phone.as
+K 25
+svn:wc:ra_dav:version-url
+V 102
+/svn/oddcast-workshops/!svn/ver/3738/branches/elfyourself2013/lib/com/adobe/fileformats/vcard/Phone.as
+END
+VCardParser.as
+K 25
+svn:wc:ra_dav:version-url
+V 108
+/svn/oddcast-workshops/!svn/ver/3738/branches/elfyourself2013/lib/com/adobe/fileformats/vcard/VCardParser.as
+END

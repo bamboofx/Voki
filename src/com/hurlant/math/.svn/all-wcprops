@@ -1,0 +1,47 @@
+K 25
+svn:wc:ra_dav:version-url
+V 82
+/svn/oddcast-workshops/!svn/ver/3738/branches/elfyourself2013/lib/com/hurlant/math
+END
+MontgomeryReduction.as
+K 25
+svn:wc:ra_dav:version-url
+V 105
+/svn/oddcast-workshops/!svn/ver/3738/branches/elfyourself2013/lib/com/hurlant/math/MontgomeryReduction.as
+END
+ClassicReduction.as
+K 25
+svn:wc:ra_dav:version-url
+V 102
+/svn/oddcast-workshops/!svn/ver/3738/branches/elfyourself2013/lib/com/hurlant/math/ClassicReduction.as
+END
+BigInteger.as
+K 25
+svn:wc:ra_dav:version-url
+V 96
+/svn/oddcast-workshops/!svn/ver/3738/branches/elfyourself2013/lib/com/hurlant/math/BigInteger.as
+END
+BarrettReduction.as
+K 25
+svn:wc:ra_dav:version-url
+V 102
+/svn/oddcast-workshops/!svn/ver/3738/branches/elfyourself2013/lib/com/hurlant/math/BarrettReduction.as
+END
+IReduction.as
+K 25
+svn:wc:ra_dav:version-url
+V 96
+/svn/oddcast-workshops/!svn/ver/3738/branches/elfyourself2013/lib/com/hurlant/math/IReduction.as
+END
+bi_internal.as
+K 25
+svn:wc:ra_dav:version-url
+V 97
+/svn/oddcast-workshops/!svn/ver/3738/branches/elfyourself2013/lib/com/hurlant/math/bi_internal.as
+END
+NullReduction.as
+K 25
+svn:wc:ra_dav:version-url
+V 99
+/svn/oddcast-workshops/!svn/ver/3738/branches/elfyourself2013/lib/com/hurlant/math/NullReduction.as
+END

@@ -1,0 +1,77 @@
+K 25
+svn:wc:ra_dav:version-url
+V 88
+/svn/oddcast-workshops/!svn/ver/3738/branches/elfyourself2013/lib/com/hurlant/crypto/tls
+END
+KeyExchanges.as
+K 25
+svn:wc:ra_dav:version-url
+V 104
+/svn/oddcast-workshops/!svn/ver/3738/branches/elfyourself2013/lib/com/hurlant/crypto/tls/KeyExchanges.as
+END
+TLSSecurityParameters.as
+K 25
+svn:wc:ra_dav:version-url
+V 113
+/svn/oddcast-workshops/!svn/ver/3738/branches/elfyourself2013/lib/com/hurlant/crypto/tls/TLSSecurityParameters.as
+END
+TLSTest.as
+K 25
+svn:wc:ra_dav:version-url
+V 99
+/svn/oddcast-workshops/!svn/ver/3738/branches/elfyourself2013/lib/com/hurlant/crypto/tls/TLSTest.as
+END
+MACs.as
+K 25
+svn:wc:ra_dav:version-url
+V 96
+/svn/oddcast-workshops/!svn/ver/3738/branches/elfyourself2013/lib/com/hurlant/crypto/tls/MACs.as
+END
+TLSConnectionState.as
+K 25
+svn:wc:ra_dav:version-url
+V 110
+/svn/oddcast-workshops/!svn/ver/3738/branches/elfyourself2013/lib/com/hurlant/crypto/tls/TLSConnectionState.as
+END
+TLSEvent.as
+K 25
+svn:wc:ra_dav:version-url
+V 100
+/svn/oddcast-workshops/!svn/ver/3738/branches/elfyourself2013/lib/com/hurlant/crypto/tls/TLSEvent.as
+END
+CipherSuites.as
+K 25
+svn:wc:ra_dav:version-url
+V 104
+/svn/oddcast-workshops/!svn/ver/3738/branches/elfyourself2013/lib/com/hurlant/crypto/tls/CipherSuites.as
+END
+TLSConfig.as
+K 25
+svn:wc:ra_dav:version-url
+V 101
+/svn/oddcast-workshops/!svn/ver/3738/branches/elfyourself2013/lib/com/hurlant/crypto/tls/TLSConfig.as
+END
+TLSEngine.as
+K 25
+svn:wc:ra_dav:version-url
+V 101
+/svn/oddcast-workshops/!svn/ver/3738/branches/elfyourself2013/lib/com/hurlant/crypto/tls/TLSEngine.as
+END
+BulkCiphers.as
+K 25
+svn:wc:ra_dav:version-url
+V 103
+/svn/oddcast-workshops/!svn/ver/3738/branches/elfyourself2013/lib/com/hurlant/crypto/tls/BulkCiphers.as
+END
+TLSSocket.as
+K 25
+svn:wc:ra_dav:version-url
+V 101
+/svn/oddcast-workshops/!svn/ver/3738/branches/elfyourself2013/lib/com/hurlant/crypto/tls/TLSSocket.as
+END
+TLSError.as
+K 25
+svn:wc:ra_dav:version-url
+V 100
+/svn/oddcast-workshops/!svn/ver/3738/branches/elfyourself2013/lib/com/hurlant/crypto/tls/TLSError.as
+END
