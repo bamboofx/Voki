@@ -1,5 +1,5 @@
 package com.voki.vhss {
-
+	
 	import com.oddcast.assets.structures.*;
 	import com.oddcast.audio.CachedTTS;
 	import com.oddcast.event.*;
@@ -27,9 +27,9 @@ package com.voki.vhss {
 	import com.voki.vhss.events.*;
 	import com.voki.vhss.playback.*;
 	import com.voki.vhss.structures.*;
-
+	
 	//[SWF(width='400', height='300', backgroundColor='#ffffff', frameRate='12')]
-
+	
 	/**
 	 * Dispatched with a successful response from sayAIResponse. The response is contained in the <code>data</code> parameter of the event.
 	 * 
@@ -119,9 +119,9 @@ package com.voki.vhss {
 	 * 
 	 * @eventType com.oddcast.event.VHSSEVENT.PLAYER_READY
 	 */
-	 [Event("player_ready", type="com.oddcast.event.VHSSEvent")]
-
-
+	[Event("player_ready", type="com.oddcast.event.VHSSEvent")]
+	
+	
 	/**
 	 * 
 	 * 
@@ -134,21 +134,21 @@ package com.voki.vhss {
 		//-o "C:\video_package\vhss_media_2d\vhss_v5_vid.swf"
 		
 		private static var allowed_domains:Array = new Array(
-													"vhss-c.oddcast.com", 
-													"vhss-a.oddcast.com", 
-													"vhss.oddcast.com", 
-													"www.oddcast.com", 
-													"vhost.oddcast.com", 
-													"vhost.staging.oddcast.com", 
-													"www2.staging.oddcast.com", 
-													"content.staging.oddcast.com", 
-													"l-char.dev.oddcast.com", 
-													"l-char.oddcast.com",
-													"char.dev.oddcast.com",
-													"char.oddcast.com",
-													"vhss-vd.oddcast.com",
-													"vhss-vs.oddcast.com"
-													);
+			"vhss-c.oddcast.com", 
+			"vhss-a.oddcast.com", 
+			"vhss.oddcast.com", 
+			"www.oddcast.com", 
+			"vhost.oddcast.com", 
+			"vhost.staging.oddcast.com", 
+			"www2.staging.oddcast.com", 
+			"content.staging.oddcast.com", 
+			"l-char.dev.oddcast.com", 
+			"l-char.oddcast.com",
+			"char.dev.oddcast.com",
+			"char.oddcast.com",
+			"vhss-vd.oddcast.com",
+			"vhss-vs.oddcast.com"
+		);
 		private var flash_vars:Object;
 		private var vhss_stage:Stage;
 		private var show:ShowController;
@@ -157,10 +157,10 @@ package com.voki.vhss {
 		private var load_xml_timer:Timer;
 		private var context_menu:ContextMenu;
 		private var cached_doc_req:CachedSceneStatus;
-//		private var de_monster_dbg:MonsterDebugger; // NOTE: Dave's personal utility
+		//		private var de_monster_dbg:MonsterDebugger; // NOTE: Dave's personal utility
 		private var output_tf:TextField;
 		private var show_domain_error:Boolean = true;
-
+		
 		
 		//private var manager:IBrowserManager;
 		
@@ -168,33 +168,36 @@ package com.voki.vhss {
 		
 		/* public function setDebugFunction(fn:Function):void
 		{
-			debug_function = fn;
+		debug_function = fn;
 		} */
 		
 		public function VHSSPlayerV5()
 		{
-			try
-			{
-				Security.allowDomain("*");
-			}catch($error:*)
-			{
-				traceTxt("VHSS V5 - ERROR - allowDomain restriction");
-			}
-//			de_monster_dbg = new MonsterDebugger(this); // NOTE: Dave's personal utility
+			//			try
+			//			{
+			//				Security.allowDomain("*");
+			//			}catch($error:*)
+			//			{
+			//				traceTxt("VHSS V5 - ERROR - allowDomain restriction");
+			//			}
+			//			de_monster_dbg = new MonsterDebugger(this); // NOTE: Dave's personal utility
 			var t_time:String = Constants.VHSS_PLAYER_DATE;
-
+			
 			if (this.loaderInfo == null || this.loaderInfo.url == null)
 			{
-//				MonsterDebugger.trace(this, "VHSS V5 --- " + t_time + " listener  url " + this.loaderInfo.url+" dev version"); // NOTE: Dave's personal utility
-				traceTxt("VHSS V5 --- " + t_time + " listener  url " + this.loaderInfo.url+" dev version");
-				this.loaderInfo.addEventListener(Event.COMPLETE, init);
+				//				MonsterDebugger.trace(this, "VHSS V5 --- " + t_time + " listener  url " + this.loaderInfo.url+" dev version"); // NOTE: Dave's personal utility
+				//traceTxt("VHSS V5 --- " + t_time + " listener  url " + this.loaderInfo.url+" dev version");
+				//this.loaderInfo.addEventListener(Event.COMPLETE, init);
 			}
 			else
 			{
-//				MonsterDebugger.trace(this, "VHSS V5 --- " + t_time + " direct    url " + this.loaderInfo.url); // NOTE: Dave's personal utility
+				//				MonsterDebugger.trace(this, "VHSS V5 --- " + t_time + " direct    url " + this.loaderInfo.url); // NOTE: Dave's personal utility
 				traceTxt("VHSS V5 --- " + t_time + " direct    url " + this.loaderInfo.url);
 				init();
 			}
+			
+			//traceTxt("VHSS V5 --- " + t_time + " direct    url " + this.loaderInfo.url);
+			init();
 		}
 		
 		
@@ -205,20 +208,20 @@ package com.voki.vhss {
 		
 		/*private function onBrowserChange(event:BrowserChangeEvent):void
 		{
-			
+		
 		}*/
 		
 		private function _loadConfig():void
 		{
-			var _info:LoaderInfo = LoaderInfo(this.loaderInfo);
+			//var _info:LoaderInfo = LoaderInfo(this.loaderInfo);
 			// if config url passed in loader info parameters, use it, otherwise try the default vhss_config_url
-			var configUrl:String;
-			if (_info.parameters.config) {
-				configUrl = _info.parameters.config;
-			} else {
-				// change Constants.VHSS_CONFIG_URL according to loaderInfo.url to reflect dev/shadow/live and ssl vs nonsecure
-				configUrl = Constants.buildConfigUrl(_info.url);
-			}
+			var configUrl:String = "assets/vhss_v5_config.xml";
+			//			if (_info.parameters.config) {
+			//				configUrl = _info.parameters.config;
+			//			} else {
+			//				// change Constants.VHSS_CONFIG_URL according to loaderInfo.url to reflect dev/shadow/live and ssl vs nonsecure
+			//				configUrl = Constants.buildConfigUrl(_info.url);
+			//			}
 			var configLoader:URLLoader = new URLLoader();
 			configLoader.addEventListener(Event.COMPLETE, onConfigComplete);
 			configLoader.addEventListener(IOErrorEvent.IO_ERROR, onConfigError);
@@ -249,11 +252,14 @@ package com.voki.vhss {
 		private function init($e:Event = null):void
 		{
 			var _info:LoaderInfo = LoaderInfo(this.loaderInfo);
-			_info.removeEventListener(Event.INIT, init);
+			//_info.removeEventListener(Event.INIT, init);
 			_loadConfig();
 		}
 		private function _continueInit():void
 		{
+			
+			dispatchEvent(new VHSSEvent(VHSSEvent.PLAYER_READY));
+			return;
 			var _info:LoaderInfo = LoaderInfo(this.loaderInfo);
 			Constants.PLAYER_CONTEXT = _info.url;
 			try
@@ -375,14 +381,14 @@ package com.voki.vhss {
 		{
 			for (var i:uint=0; i < $in_ar.length; i++)
 			{
-				try
-				{
-					Security.allowDomain($in_ar[i]);
-					Security.allowInsecureDomain($in_ar[i]);
-				}catch($error:*)
-				{
-					trace("ERROR - allowDomain restriction");
-				}
+				//				try
+				//				{
+				//					Security.allowDomain($in_ar[i]);
+				//					Security.allowInsecureDomain($in_ar[i]);
+				//				}catch($error:*)
+				//				{
+				//					trace("ERROR - allowDomain restriction");
+				//				}
 			}
 		}
 		
@@ -431,7 +437,7 @@ package com.voki.vhss {
 				load_xml_timer.removeEventListener(TimerEvent.TIMER, loadLocalXML);
 			}
 		}
-
+		
 		private function showUpdateMessage():void
 		{
 			var t_mc:MovieClip = new MovieClip();
@@ -459,7 +465,7 @@ package com.voki.vhss {
 			tf_need_update.setTextFormat(t_format);
 			t_mc.addEventListener(MouseEvent.CLICK, e_updateFlash);
 		}
-
+		
 		// Internal API
 		// Stop the default xml from loading or force it to load immediately. There is a 200 ms window after the PLAYER_LOADED event to stop the default xml from loading.
 		public function useDefaultXML($b:Boolean):void
@@ -485,9 +491,10 @@ package com.voki.vhss {
 			//----trace("VHSS V4 --------- load host  id: " + $host.url);
 			var _hs:HostStruct = new HostStruct($host.url,  $host.id, $host.type);
 			if ($host.cs != null) _hs.cs = $host.cs;
-			_hs.engine.url = $host.engine.url;
-			_hs.engine.type = $host.engine.type;
-			_hs.engine.id = $host.engine.id;
+			//_hs.engine.url = $host.engine.url;
+			//_hs.engine.type = $host.engine.type;
+			//_hs.engine.id = $host.engine.id;
+			_hs.engine = $host.engine;
 			show.loadHost(_hs, true);
 		}
 		
@@ -680,7 +687,7 @@ package com.voki.vhss {
 			if ($degrees == 0) $degrees = 360;
 			if (show && $degrees && $duration) show.setGaze($degrees, $duration, $radius, $page_req);
 		}
-	
+		
 		public function setIdleMovement(frequency:int = 50, radius:int = 50):void
 		{
 			if (show)
@@ -768,7 +775,7 @@ package com.voki.vhss {
 		}
 		
 		// --- SCENE API 
-
+		
 		
 		// SPEECH API ---
 		public function loadAudio($name:String):void
@@ -830,7 +837,7 @@ package com.voki.vhss {
 				}
 				else 
 				{
- 					if (show_domain_error)
+					if (show_domain_error)
 					{
 						show_domain_error = false;
 						try
@@ -904,7 +911,7 @@ package com.voki.vhss {
 			
 			show.sayByNameExported(new APIAudioRequest($name, $start));
 		}
-
+		
 		public function sayByUrl($url:String):void
 		{
 			show.sayAudio($url);
@@ -940,12 +947,12 @@ package com.voki.vhss {
 		/*
 		public function getCharacterSound():Sound
 		{
-			return show.getCharacterSound();
+		return show.getCharacterSound();
 		}
 		
 		public function getCharacterSoundChannel():SoundChannel
 		{
-			return show.getCharacterSoundChannel();
+		return show.getCharacterSoundChannel();
 		}*/
 		// --- SPEECH API
 		
@@ -971,12 +978,12 @@ package com.voki.vhss {
 				show.gotoScene(uint($scene));
 			}
 		}
-			
+		
 		public function gotoNextScene():void
 		{
 			show.gotoNextScene();
 		}
-			public function preloadNextScene():void
+		public function preloadNextScene():void
 		{
 			show.preloadNextScene();
 		}
@@ -1048,7 +1055,7 @@ package com.voki.vhss {
 				ExternalInterface.call("VHSS_Command", "vh_ttsLoaded", APIAudioRequest($e.data).name );
 			}
 			catch($e:Error)
-			
+				
 			{
 				//----trace("VHSS PLAYER -- ExternalInterface ERROR");
 			}

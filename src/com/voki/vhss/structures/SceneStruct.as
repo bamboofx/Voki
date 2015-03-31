@@ -8,10 +8,14 @@
 
 package com.voki.vhss.structures{
 
-	import com.oddcast.assets.structures.*;
+	import com.oddcast.assets.structures.AudioStruct;
+	import com.oddcast.assets.structures.BackgroundStruct;
+	import com.oddcast.assets.structures.HostStruct;
+	import com.oddcast.assets.structures.SkinStruct;
 	import com.pagodaflash.data.ObjectUtil;
 	
 	import flash.geom.Matrix;
+	import flash.utils.ByteArray;
 	
 	public class SceneStruct
 	{
@@ -72,8 +76,17 @@ package com.voki.vhss.structures{
 		
 		public function get backgroundTransform():Object
 		{
-			return ObjectUtil.duplicate(_backgroundTransform);
+			function clone( source:Object ):* 
+			{ 
+				var myBA:ByteArray = new ByteArray(); 
+				myBA.writeObject( source ); 
+				myBA.position = 0; 
+				return( myBA.readObject() ); 
+			}
+
+			return clone(_backgroundTransform);
 		}
+		
 		public function set backgroundTransform(transform:Object):void
 		{
 			// since transform might not contain all available props (maybe just x and y, not rotation, scaleX, scaleY), copy properties over so as not to overwrite untouched ones

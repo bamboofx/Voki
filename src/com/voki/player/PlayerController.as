@@ -17,8 +17,10 @@
 	import com.voki.data.SessionVars;
 	import com.voki.data.ShowStruct;
 	import com.voki.data.SkinConfiguration;
+	import com.voki.engine.EngineV5;
 	import com.voki.processing.ASyncProcess;
 	import com.voki.processing.ASyncProcessList;
+	import com.voki.vhss.VHSSPlayerV5;
 	
 	import flash.display.Loader;
 	import flash.display.MovieClip;
@@ -30,21 +32,21 @@
 	import flash.net.URLRequest;
 	import flash.system.ApplicationDomain;
 	import flash.system.LoaderContext;
-	import flash.system.SecurityDomain;	
+	import flash.system.SecurityDomain;
 	
 	/**
-	* ...
-	* @author Sam Myer
+	 * ...
+	 * @author Sam Myer
 	 * @author Rob Gungor - 3/23/15
-	*/
+	 */
 	public class PlayerController extends EventDispatcher {
 		public var playerHolder:MovieClip;
 		private var playerLoader:Loader;
-		private var player:IInternalPlayerAPI;
+		private var player:VHSSPlayerV5;
 		private var curScene:SceneStruct;
 		private var show:ShowStruct;
 		private var isLoaded:Boolean = false;
-		private var defaultEngine:EngineStruct;
+		private var defaultEngine:EngineV5;
 		private var showUrl:String;
 		public var curSceneIndex:int = 1;
 		
@@ -71,6 +73,8 @@
 		public function PlayerController($playerHolder:MovieClip):void {
 			playerHolder = $playerHolder;
 			//defaultEngine = new EngineStruct("http://content.dev.oddcast.com/char/engines/engineV5.swf", 42, "2D");
+			defaultEngine = new EngineV5();
+			//playerHolder.addChild(defaultEngine);
 			
 			_processList = new ASyncProcessList();
 		}
@@ -87,21 +91,24 @@
 			//url= "http://content.dev.oddcast.com/vhss/vhss_v5.swf";
 			url = SessionVars.playerURL;
 			
-			//if (playerHolder.placeholder != null) playerHolder.removeChild(playerHolder.placeholder);
+			if (playerHolder.placeholder != null) playerHolder.removeChild(playerHolder.placeholder);
 			
-			playerLoader = new Loader();
-			playerHolder.addChild(playerLoader);
-			playerLoader.contentLoaderInfo.addEventListener(Event.COMPLETE, playerLoaded);
-			var context:LoaderContext = new LoaderContext(false, new ApplicationDomain(),SecurityDomain.currentDomain);
-			playerLoader.load(new URLRequest(url));
+			//			playerLoader = new Loader();
+			//			playerHolder.addChild(playerLoader);
+			//			playerLoader.contentLoaderInfo.addEventListener(Event.COMPLETE, playerLoaded);
+			//			var context:LoaderContext = new LoaderContext(false, new ApplicationDomain(),SecurityDomain.currentDomain);
+			//			playerLoader.load(new URLRequest(url));
+			playerLoaded(new Event(''));
 		}
 		
 		
 		private function playerLoaded(evt:Event):void {
-			playerLoader.contentLoaderInfo.removeEventListener(Event.COMPLETE, playerLoaded);
-			player = (playerLoader.content) as IInternalPlayerAPI;
+			//playerLoader.contentLoaderInfo.removeEventListener(Event.COMPLETE, playerLoaded);
+			//player = (playerLoader.content) as IInternalPlayerAPI;
 			//isLoaded = true;
-	
+			player = new VHSSPlayerV5();
+			
+			
 			player.addEventListener(VHSSEvent.PLAYER_READY, vhss_ready)
 			player.addEventListener(VHSSEvent.SCENE_LOADED, vhss_sceneLoaded);
 			player.addEventListener(VHSSEvent.TALK_STARTED, vhss_talkStarted);
@@ -113,13 +120,15 @@
 			player.addEventListener(VHSSEvent.SCENE_PLAYBACK_COMPLETE, vhss_scenePlaybackComplete);
 			player.addEventListener(VHSSEvent.PLAYER_DATA_ERROR, vhss_onDataError);
 			player.addEventListener(VHSSEvent.AUDIO_ERROR, vhss_onAudioError);
+			playerHolder.addChild(player);
+			playerHolder.addChild(defaultEngine);
 			
 			//if (SessionVars.editorMode == "SceneEditor")
 			//{
-				playerHolder.addEventListener(MouseEvent.CLICK, playerClicked, true);
+			playerHolder.addEventListener(MouseEvent.CLICK, playerClicked, true);
 			//}
 			//player.loadShowXML(showXML.toXMLString());			
-			//dispatchEvent(new Event(Event.INIT));
+			dispatchEvent(new Event(Event.INIT));
 		}
 		
 		
@@ -135,24 +144,32 @@
 		private function vhss_ready(evt:VHSSEvent):void
 		{
 			player.setPlayerInitFlags(PlayerInitFlags.TRACKING_OFF | PlayerInitFlags.IGNORE_PLAY_ON_LOAD | PlayerInitFlags.SUPPRESS_EXPORT_XML | PlayerInitFlags.SUPPRESS_PLAY_ON_CLICK | PlayerInitFlags.SUPPRESS_LINKS | PlayerInitFlags.SUPPRESS_AUTO_ADV);			
+			SessionVars.editorMode = "CharacterEditor";
+			SessionVars.charEdit_engineUrl 	= "assets/engineV5.swf";
+			SessionVars.charEdit_oh 		= "assets/ohv2.swf";//?cs=320a0a4:840907:c42e6a6:681c124:0:101:101:101:101:101:1:10:0:0";
+			SessionVars.charEdit_pupId		= '5';
+			SessionVars.charEdit_name 		= "";
 			if (SessionVars.editorMode == "CharacterEditor")
 			{
+				
 				var shs:SPHostStruct = new SPHostStruct(SessionVars.charEdit_oh, uint(SessionVars.charEdit_pupId), "", SessionVars.charEdit_name);
 				//var hs:HostStruct = new HostStruct(SessionVars.charEdit_oh, uint(SessionVars.charEdit_charId),"host_2d");
-				shs.engine = new EngineStruct(SessionVars.charEdit_engineUrl);
+				shs.engine = defaultEngine;//new EngineStruct(SessionVars.charEdit_engineUrl);
 				show = new ShowStruct();				
 				show.scene = new SceneStruct();
 				curScene = show.scene;
-				if (SessionVars.charEdit_oh.toLowerCase().indexOf("oa1")>=0)
-				{
-					shs.is3d = true;
-					shs.type = "host_3d";
-				}
+				//				if (SessionVars.charEdit_oh.toLowerCase().indexOf("oa1")>=0)
+				//				{
+				//					shs.is3d = true;
+				//					shs.type = "host_3d";
+				//				}
 				scene.model = shs;
 				scene.model.isOwned = true;
 				
 				player.initBlankShow();
-				player.loadHost(shs);				
+				player.loadHost(shs);	
+				//TODO - this needs to happen after model is loaded
+				show.scene.model.getInfoXML(onSceneLoaded);
 			}
 			else
 			{				
@@ -173,7 +190,7 @@
 				updateSkinSettings();
 				return;			
 			}
-
+			
 			
 			isLoaded = true;
 			trace("PlayerController::vhss_sceneLoaded");
@@ -213,14 +230,15 @@
 			if (show.scene.model == null) dispatchEvent(new Event(Event.INIT));
 			else 
 			{
-				onSceneLoaded();
+				//onSceneLoaded();
+				//show.scene.model.getInfoXML(onSceneLoaded);
 				/*
 				if (SessionVars.editorMode != "CharacterEditor")
 				{
-					if (loadModelInfo && (scene.model.type.toLowerCase() != "3d" && scene.model.type.toLowerCase() != "host_3d"))
-					{
-						show.scene.model.getInfoXML(onSceneLoaded);
-					}
+				if (loadModelInfo && (scene.model.type.toLowerCase() != "3d" && scene.model.type.toLowerCase() != "host_3d"))
+				{
+				show.scene.model.getInfoXML(onSceneLoaded);
+				}
 				}
 				*/
 			}
@@ -251,12 +269,12 @@
 			
 		}
 		/*public function loadScene(s:SceneStruct) {
-			curScene = s;
+		curScene = s;
 		}*/
 		
 		/*private function get controller():IVhostConfigController {
-			if (player == null) return(null);
-			return(player.getConfigController() as IVhostConfigController);
+		if (player == null) return(null);
+		return(player.getConfigController() as IVhostConfigController);
 		}*/
 		public function get engineAPI():* {
 			return(player.getActiveEngineAPI());
@@ -278,11 +296,11 @@
 			/*
 			else if (show.sceneArr[curSceneIndex].model.type.toLowerCase()!="3d" && show.sceneArr[curSceneIndex].model.type.toLowerCase()!="host_3d")
 			{
-				return(engineAPI.getConfigController());
+			return(engineAPI.getConfigController());
 			}
 			else
 			{
-				return null;
+			return null;
 			}
 			*/
 		}
@@ -312,10 +330,12 @@
 				controller.removeEventListener(EngineEvent.ACCESSORY_LOADED, onAccessoryLoaded);
 			}
 			if (model.engine == null) model.engine = defaultEngine;
+			
 			scene.model = model;
+			//show.scene.model.getInfoXML(onSceneLoaded);
 			processList.processStarted(model);
 			if (model.engine == null) throw new Error("This model is missing an engine");
-			trace("SitepalV5::PlayerController::doLoadModel model id="+model.id+"  char id="+charId+" engine url="+model.engine.url+" model.type="+model.type);
+			//trace("SitepalV5::PlayerController::doLoadModel model id="+model.id+"  char id="+charId+" engine url="+model.engine.url+" model.type="+model.type);
 			player.loadHost(model.cloneForPlayer(charId));
 		}
 		
@@ -475,7 +495,7 @@
 		}
 		
 		//----------------------------  AUDIO  -------------------------
-
+		
 		public function playAudio(audio:AudioData):void {
 			if (audio == null) return;
 			trace("PlayerController::playAudio " + audio.url);
@@ -495,7 +515,7 @@
 			compileScene();			
 			curSceneIndex = index;
 			processList.processStarted(scene);
-
+			
 			player.gotoScene(index);
 		}
 		
@@ -562,7 +582,7 @@
 		}
 		
 		//-------------------------------------  CALLBACKS -----------------------------------
-				
+		
 		private function onSceneLoaded():void {
 			trace("SitepalV5::onSceneLoaded");
 			
@@ -590,55 +610,55 @@
 		}
 		
 		private function vhss_configDone(evt:Object):void {
-//			trace("PlayerController::vhss_configDone");
-//			if (scene!=null && (scene.model.type.toLowerCase() != "3d" && scene.model.type.toLowerCase() != "host_3d"))
-//			{
-//				if (zoomer != null)
-//				{
-//					zoomer.minScale = MoveZoomUtil.MIN_SCALE_2D;	
-//					if (zoomer.scale < MoveZoomUtil.MIN_SCALE_2D)
-//					{
-//						zoomer.scale = MoveZoomUtil.MIN_SCALE_2D;
-//					}
-//				}
-//			}
-//			else if (zoomer!=null)
-//			{
-//				
-//				if (zoomer.scale < MoveZoomUtil.MIN_SCALE_3D)
-//				{
-//					zoomer.scale = MoveZoomUtil.MIN_SCALE_3D;
-//				}								
-//				zoomer.minScale = MoveZoomUtil.MIN_SCALE_3D;				
-//			}
-//			if (!isLoaded && SessionVars.editorMode != "CharacterEditor") return;			
-//			if (scene!=null && loadModelInfo && (scene.model.type.toLowerCase() != "3d" && scene.model.type.toLowerCase() != "host_3d"))
-//			{
-//				if (zoomer != null)
-//				{
-//					zoomer.minScale = MoveZoomUtil.MIN_SCALE_2D;
-//				}
-//				show.scene.model.getInfoXML(onModelLoaded);
-//			}
-//			else
-//			{
-//				if (zoomer != null)
-//				{
-//					if (zoomer.scale < MoveZoomUtil.MIN_SCALE_3D)
-//					{
-//						zoomer.scaleTo(MoveZoomUtil.MIN_SCALE_3D, true);
-//					}								
-//					zoomer.minScale = MoveZoomUtil.MIN_SCALE_3D;
-//				}
-//				onModelLoaded();
-//			}
-//			
-//			
-//			if (controller!=null)
-//			{
-//				controller.addEventListener(EngineEvent.ACCESSORY_LOADED, onAccessoryLoaded);
-//			}
-//			
+			//			trace("PlayerController::vhss_configDone");
+			//			if (scene!=null && (scene.model.type.toLowerCase() != "3d" && scene.model.type.toLowerCase() != "host_3d"))
+			//			{
+			//				if (zoomer != null)
+			//				{
+			//					zoomer.minScale = MoveZoomUtil.MIN_SCALE_2D;	
+			//					if (zoomer.scale < MoveZoomUtil.MIN_SCALE_2D)
+			//					{
+			//						zoomer.scale = MoveZoomUtil.MIN_SCALE_2D;
+			//					}
+			//				}
+			//			}
+			//			else if (zoomer!=null)
+			//			{
+			//				
+			//				if (zoomer.scale < MoveZoomUtil.MIN_SCALE_3D)
+			//				{
+			//					zoomer.scale = MoveZoomUtil.MIN_SCALE_3D;
+			//				}								
+			//				zoomer.minScale = MoveZoomUtil.MIN_SCALE_3D;				
+			//			}
+			//			if (!isLoaded && SessionVars.editorMode != "CharacterEditor") return;			
+			//			if (scene!=null && loadModelInfo && (scene.model.type.toLowerCase() != "3d" && scene.model.type.toLowerCase() != "host_3d"))
+			//			{
+			//				if (zoomer != null)
+			//				{
+			//					zoomer.minScale = MoveZoomUtil.MIN_SCALE_2D;
+			//				}
+			//				show.scene.model.getInfoXML(onModelLoaded);
+			//			}
+			//			else
+			//			{
+			//				if (zoomer != null)
+			//				{
+			//					if (zoomer.scale < MoveZoomUtil.MIN_SCALE_3D)
+			//					{
+			//						zoomer.scaleTo(MoveZoomUtil.MIN_SCALE_3D, true);
+			//					}								
+			//					zoomer.minScale = MoveZoomUtil.MIN_SCALE_3D;
+			//				}
+			//				onModelLoaded();
+			//			}
+			//			
+			//			
+			//			if (controller!=null)
+			//			{
+			//				controller.addEventListener(EngineEvent.ACCESSORY_LOADED, onAccessoryLoaded);
+			//			}
+			//			
 		}
 		
 		private function onModelLoaded():void {
@@ -663,7 +683,7 @@
 			
 			//if (SessionVars.editorMode == "SceneEditor")
 			//{
-				processList.processDoneByType(ASyncProcess.PROCESS_SKIN, true);
+			processList.processDoneByType(ASyncProcess.PROCESS_SKIN, true);
 			//}
 			if (manualLoadSkin)
 			{

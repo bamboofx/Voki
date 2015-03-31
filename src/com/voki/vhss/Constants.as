@@ -45,7 +45,7 @@ package com.voki.vhss
 		public static var SITEPAL_BASE							:String;
 		private static var _SITEPAL_BASE_DEV					:String;
 		private static var _SITEPAL_BASE_STAGING				:String;
-	
+		
 		public static var SAY_BY_NAME_PHP						:String = "/admin/getAudioByNameMP3.php";
 		public static var AI_PHP								:String = "/ai/input.php";
 		public static var BG_PHP								:String = "/admin/getBGByNameV2.php";
@@ -53,7 +53,7 @@ package com.voki.vhss
 		public static var EXPORT_XML							:String = "play_scene.xml";
 		public static var COMM_WINDOW							:String = "http://content.dev.oddcast.com/vhss_dev/vhss_voip_component.swf";
 		public static var SET_COOKIE_PHP						:String;
-	
+		
 		public static const EXP_AD_PERCENT						:Number = .25;
 		public static const EXP_AD_MAX							:Number = 500;
 		public static const BG_SCALE_DEFAULT					:Number = 1.33;
@@ -84,9 +84,9 @@ package com.voki.vhss
 		public static var ERROR_REPORTING_ACTIVE				:Boolean = true;
 		public static var INTERNAL_MODE							:String;
 		
-		public static const VOLUME_RANGE_PLAYER					:Range = new Range(0, 10);
-		public static const VOLUME_RANGE_2D						:Range = new Range(0, 1);
-		public static const VOLUME_RANGE_3D						:Range = new Range(0, 100);
+		public static const VOLUME_RANGE_PLAYER					:Object= {max:10};
+		public static const VOLUME_RANGE_2D						:Object = {max:1};
+		//public static const VOLUME_RANGE_3D						:Range = new Range(0, 100);
 		
 		public static function set PLAYER_CONTEXT(url:String):void
 		{
@@ -166,7 +166,7 @@ package com.voki.vhss
 				//trace("Constants::verifyDomains - t_dom='"+t_dom+"'");
 				t_dom = t_md5.hash(t_dom);
 				//trace("Constants::verifyDomains - md5='"+t_dom+"'");
-
+				
 				for (var i:Number = 0; i < $xl.length(); ++i) {
 					//trace("Constants::verifyDomains -  DOMAIN CHECK '"+$xl[i].@V+"' == '"+t_dom+"' or '"+t_dom_sub_wildcard_hash+"' or '"+t_dom_sub_sub_wildcard_hash+"'");
 					if ($xl[i].@V==t_dom) {

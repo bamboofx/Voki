@@ -17,6 +17,10 @@ package com.voki.vhss.playback
 	import com.oddcast.host.api.EditLabel;
 	import com.oddcast.host.api.EngineEventStrings;
 	import com.oddcast.utils.ErrorReportingLoader;
+	import com.voki.engine.EngineV5;
+	import com.voki.vhss.Constants;
+	import com.voki.vhss.events.AssetEvent;
+	import com.voki.vhss.util.ExpressionMap;
 	
 	import flash.display.LoaderInfo;
 	import flash.display.MovieClip;
@@ -30,10 +34,6 @@ package com.voki.vhss.playback
 	import flash.media.Sound;
 	import flash.media.SoundChannel;
 	import flash.utils.Timer;
-	
-	import com.voki.vhss.Constants;
-	import com.voki.vhss.events.AssetEvent;
-	import com.voki.vhss.util.ExpressionMap;
 
 	public class HostHolder extends AssetHolder 
 	{
@@ -74,30 +74,30 @@ package com.voki.vhss.playback
 					catch($e:*){}
 					loadHost2d();
 					break;
-				case HostStruct.HOST_3D:
-					var t_eng:LoadedAssetStruct = loading_host_data.engine;
-					//try this to get the document class
-					//Engine3d = Object(t_eng.loader.content).constructor; 
-					//
-					try 
-					{
-						if (t_eng.loader.contentLoaderInfo.applicationDomain.hasDefinition("__main__4editor"))
-						{
-							//----trace("HostHolder :::  use __main__4editor");
-							Engine3d = t_eng.loader.contentLoaderInfo.applicationDomain.getDefinition("__main__4editor") as Class;
-						}
-						else 
-						{
-							//----trace("HostHolder :::  use __main__4host");
-							Engine3d = t_eng.loader.contentLoaderInfo.applicationDomain.getDefinition("__main__4host") as Class;							
-						}
-					}
-					catch ($error:ReferenceError)
-					{
-						//----trace("ERROR ::: HostHolder :: Engine class does not exist!!!!!!!!!!!!!!  ");
-					}
-					loadHost3d();
-					break;
+//				case HostStruct.HOST_3D:
+//					var t_eng:LoadedAssetStruct = loading_host_data.engine;
+//					//try this to get the document class
+//					//Engine3d = Object(t_eng.loader.content).constructor; 
+//					//
+//					try 
+//					{
+//						if (t_eng.loader.contentLoaderInfo.applicationDomain.hasDefinition("__main__4editor"))
+//						{
+//							//----trace("HostHolder :::  use __main__4editor");
+//							Engine3d = t_eng.loader.contentLoaderInfo.applicationDomain.getDefinition("__main__4editor") as Class;
+//						}
+//						else 
+//						{
+//							//----trace("HostHolder :::  use __main__4host");
+//							Engine3d = t_eng.loader.contentLoaderInfo.applicationDomain.getDefinition("__main__4host") as Class;							
+//						}
+//					}
+//					catch ($error:ReferenceError)
+//					{
+//						//----trace("ERROR ::: HostHolder :: Engine class does not exist!!!!!!!!!!!!!!  ");
+//					}
+//					loadHost3d();
+//					break;
 				default:
 					dispatchEvent(new ErrorEvent(ErrorEvent.ERROR, false, true, "OC Error: Host is not a known type. type: "+loading_host_data.type));
 					//----trace("HostHolder :::  engine ready :: type unknown  :: " + loading_host_data.type);
@@ -112,7 +112,7 @@ package com.voki.vhss.playback
 		{
 			if (!asset) return null;
 			if (asset.type == HostStruct.HOST_2D) {
-				return engine_holder.getLoadedAsset(asset.engine.id.toString() + asset.engine.url).display_obj;
+				return asset.engine;///engine_holder.getLoadedAsset(asset.engine.id.toString() + asset.engine.url).display_obj;
 			} else if (asset.type == HostStruct.HOST_3D) {
 				return asset.host_container.getAPI();
 			}
@@ -146,7 +146,11 @@ package com.voki.vhss.playback
 			var t_hs:HostStruct = loading_host_data;
 			t_hs.host_container = new MovieClip();
 			t_hs.host_container.name = "container_"+t_hs.id.toString();
-			MovieClip(t_hs.engine.display_obj).loadModel(t_hs.url, t_hs.host_container);
+			var engine:EngineV5 = t_hs.engine;
+			this.active_engine_api = engine;
+			engine.loadModel(t_hs.url, t_hs.host_container);
+			
+			//MovieClip(engine.display_obj).loadModel(t_hs.url, t_hs.host_container);
 		}
 		
 		private function dispatchAudioProgress($percent:Number):void
@@ -318,9 +322,9 @@ package com.voki.vhss.playback
 		public function setVolume(value:Number):void
 		{
 			try {
-				if (active_host_data.type == HostStruct.HOST_3D)
-					value *= Constants.VOLUME_RANGE_3D.max;
-				else if (active_host_data.type == HostStruct.HOST_2D)
+//				if (active_host_data.type == HostStruct.HOST_3D)
+//					value *= Constants.VOLUME_RANGE_3D.max;
+//				else if (active_host_data.type == HostStruct.HOST_2D)
 					value *= Constants.VOLUME_RANGE_2D.max;
 				
 				active_engine_api.setHostVolume(value);
@@ -363,13 +367,14 @@ package com.voki.vhss.playback
 			loading_host_data = HostStruct($asset);
 			var t_hs:HostStruct = HostStruct($asset);
 			var _h_index:String = escape(t_hs.id.toString()+t_hs.url);
+			
 			//trace("HOSTHOLDER -- "+active_host_data);
-			if (active_host_data == null || engine_holder.getLoadedAsset(t_hs.engine.id.toString()+t_hs.engine.url) == null) // engine is not loaded
+			if (active_host_data == null || active_engine_api == null)//|| engine_holder.getLoadedAsset(t_hs.engine.id.toString()+t_hs.engine.url) == null) // engine is not loaded
 			{
 				stack[_h_index] = t_hs;
-				engine_holder.loadAsset(t_hs.engine);
-			}
-			else if (stack[_h_index] != null)  // host and engine have already been loaded
+//				engine_holder.loadAsset(t_hs.engine);
+				engineReady();
+			}else if (stack[_h_index] != null)  // host and engine have already been loaded
 			{
 				var t_shs:HostStruct = stack[_h_index];
 				loading_host_data.display_obj = t_shs.display_obj;
@@ -381,9 +386,10 @@ package com.voki.vhss.playback
 			}
 			else // engine is loaded but host is not
 			{
-				loading_host_data.engine = EngineStruct(engine_holder.getLoadedAsset(t_hs.engine.id.toString()+t_hs.engine.url));
+				loading_host_data.engine = t_hs.engine;//EngineStruct(engine_holder.getLoadedAsset(t_hs.engine.id.toString()+t_hs.engine.url));
 				stack[_h_index] = t_hs;
-				(t_hs.type == HostStruct.HOST_3D) ? loadHost3d() : loadHost2d();
+				//(t_hs.type == HostStruct.HOST_3D) ? loadHost3d() : loadHost2d();
+				loadHost2d();
 			}
 		}
 				

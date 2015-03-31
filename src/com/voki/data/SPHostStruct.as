@@ -7,9 +7,9 @@
 	import com.voki.engine.EngineV5;
 	
 	/**
-	* ...
-	* @author Sam Myer
-	*/
+	 * ...
+	 * @author Sam Myer
+	 */
 	public class SPHostStruct extends HostStruct implements IThumbSelectorData {
 		private static var tempCounter:int=1;
 		private var _tempId:int = 0;		
@@ -42,7 +42,7 @@
 		public function SPHostStruct($charUrl:String,$modelId:int=0,$thumbUrl:String=null,$name:String="") {
 			super($charUrl, $modelId);
 			
-			engine= new EngineV5();
+			//engine= new EngineV5();
 			_tempId=tempCounter;
 			tempCounter++;
 			
@@ -93,7 +93,10 @@
 			}
 			trace("SPHostStruct::getInfoXML - "+OHUrlParser.getOHObject("url"));//
 			var ohStr:String = OHUrlParser.getOHString(OHUrlParser.getOHObject("url")).split("/").join("|");
+			SessionVars.localBaseURL = "http://vhss.oddcast.com/vhss_editors/";
 			var url:String=SessionVars.localBaseURL+"getModelInfo.php?modelId="+modelId+"&oh="+ohStr+"&partnerId="+SessionVars.partnerId+"&accId="+SessionVars.acc;
+			url ="http://vhss.oddcast.com/vhss_editors/getModelInfo.php?modelId=3336&oh=0|0|0|0|0|0|0|0|0|0|0|&partnerId=1&accId=1617243&demo=1";
+			url = "test_model_info.xml";
 			//if (model.getPrivate()) url+="&accId="+SessionVars.acc;
 			//trace("calling getModelInfo: "+url)
 			//if (!scene.model.getPrivate()) url+="&doorId="+SessionVars.doorId;
